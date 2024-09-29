@@ -88,7 +88,15 @@ export default function Page() {
                       {item.concept}
                     </td>
                     <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                      {item.status}
+                      {item.status === "pending" ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                          Pendiente
+                        </span>
+                      ) : (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          Pagado
+                        </span>
+                      )}
                     </td>
                     <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
                       {numeral(item.amount).format("$0,0.00")}

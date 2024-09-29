@@ -1,15 +1,18 @@
 "use client";
 import { useAuthContext } from "@/context/AuthContext";
 import getData from "@/firebase/firestore/getData";
+import getList from "@/firebase/firestore/getList";
 import getWhereList from "@/firebase/firestore/getWhereList";
+import updateData from "@/firebase/firestore/updateData";
 import uploadFile from "@/firebase/storage/uploadFile";
 import numeral from "numeral";
 import { useEffect, useState } from "react";
 
-const Item = ({ sale }) => {
+const Item = ({ sale, salesFunction }) => {
   const [customer, setCustomer] = useState({});
   const [pys, setPys] = useState({});
   const [site, setSite] = useState({});
+  const [business, setBusiness] = useState({});
 
   const customerFunction = () => {
     getData("customers", sale.customer).then((snap) => {
@@ -26,6 +29,11 @@ const Item = ({ sale }) => {
       setSite(snap.result.data());
     });
   };
+  const businessFunction = () => {
+    getData("business", sale.business).then((snap) => {
+      setBusiness(snap.result.data());
+    });
+  };
 
   useEffect(() => {
     if (sale.customer) {
@@ -40,6 +48,11 @@ const Item = ({ sale }) => {
   useEffect(() => {
     if (sale.site) {
       siteFunction();
+    }
+  }, [sale]);
+  useEffect(() => {
+    if (sale.business) {
+      businessFunction();
     }
   }, [sale]);
 
@@ -65,8 +78,21 @@ const Item = ({ sale }) => {
           </h3>
           <p className="text-sm text-gray-500">{customer.name}</p>
           <p className="text-sm text-gray-500">{site.name}</p>
+          <p className="text-sm text-gray-500">{business.title}</p>
         </div>
         <div>
+          {sale.status === "pending" && (
+            <button
+              className="bg-indigo-600 text-white rounded-md px-2 py-1 text-sm font-semibold shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mb-2"
+              onDoubleClick={() => {
+                updateData("sales", sale.id, { status: "success" }).then(() => {
+                  salesFunction();
+                });
+              }}
+            >
+              Marcar como Exitoso
+            </button>
+          )}
           <p className="text-sm text-gray-500">
             {numeral(sale.amount).format("$0,0.00")}
           </p>
@@ -78,7 +104,7 @@ const Item = ({ sale }) => {
             target="_blank"
             className="text-sm text-indigo-600 hover:underline"
           >
-            Ver archivo
+            Ver comprobante de pago
           </a>
         </div>
       </div>
@@ -89,7 +115,7 @@ const Item = ({ sale }) => {
 export default function Page() {
   const { user } = useAuthContext();
   const [userData, setUserData] = useState({});
-  const [site, setSite] = useState(null);
+  const [sites, setSites] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [sales, setSales] = useState([]);
   const [pys, setPys] = useState([]);
@@ -100,21 +126,27 @@ export default function Page() {
     });
   };
   const siteFunction = () => {
-    getData("sites", userData.site).then((snap) => {
-      setSite(snap.result.data());
+    getList("sites").then((snap) => {
+      const data = snap.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setSites(data);
     });
   };
   const customersFunction = () => {
-    getWhereList("customers", "site", "==", userData.site).then((snap) => {
+    getList("customers").then((snap) => {
       const data = snap.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setCustomers(data);
     });
   };
   const salesFunction = () => {
-    getWhereList("sales", "site", "==", userData.site).then((snap) => {
+    getList("sales").then((snap) => {
       const data = snap.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      const ordered = data.sort((a, b) => b.date - a.date);
-      setSales(ordered);
+      setSales(data);
+    });
+  };
+  const pysFunction = () => {
+    getList("pys").then((snap) => {
+      const data = snap.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setPys(data);
     });
   };
 
@@ -128,17 +160,18 @@ export default function Page() {
       siteFunction();
       customersFunction();
       salesFunction();
+      pysFunction();
     }
   }, [userData.site]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { customer, pys, amount, file } = e.target.elements;
+    const { site, customer, pys, amount, file } = e.target.elements;
     var data = {
+      site: site.value,
       customer: customer.value,
       pys: pys.value,
       amount: amount.value,
-      site: userData.site,
       date: new Date().valueOf(),
       status: "pending",
     };
@@ -171,6 +204,27 @@ export default function Page() {
             comisiones más rápido.
           </p>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 mt-6">
+            <div>
+              <label
+                htmlFor="site"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Sitio
+              </label>
+              <select
+                id="site"
+                name="site"
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                required
+              >
+                <option value="">Selecciona un sitio</option>
+                {sites.map((site) => (
+                  <option key={site.id} value={site.id}>
+                    {site.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div>
               <label
                 htmlFor="customer"
@@ -233,7 +287,7 @@ export default function Page() {
                 htmlFor="file"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Archivo
+                Comprobante de Pago
               </label>
               <div className="mt-2.5">
                 <input
@@ -262,7 +316,7 @@ export default function Page() {
           </p>
           <div className="mt-6">
             {sales.map((sale) => (
-              <Item key={sale.id} sale={sale} />
+              <Item key={sale.id} sale={sale} salesFunction={salesFunction} />
             ))}
           </div>
         </div>
