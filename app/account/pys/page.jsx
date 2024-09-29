@@ -182,7 +182,10 @@ const Detail = ({ open, setOpen }) => {
                             className="divide-y divide-gray-100 rounded-md border border-gray-200"
                           >
                             {documents.map((item) => (
-                              <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                              <li
+                                key={item.id}
+                                className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
+                              >
                                 <div className="flex w-0 flex-1 items-center">
                                   <PaperClipIcon
                                     aria-hidden="true"
@@ -218,7 +221,10 @@ const Detail = ({ open, setOpen }) => {
                               className="divide-y divide-gray-100 rounded-md border border-gray-200"
                             >
                               {range.map((item) => (
-                                <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                <li
+                                  key={item.id}
+                                  className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
+                                >
                                   <div className="flex w-0 flex-1 items-center">
                                     <div className="ml-4 flex min-w-0 flex-1 gap-2">
                                       <span className="font-medium">

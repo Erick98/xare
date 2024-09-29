@@ -91,7 +91,7 @@ export default function Page() {
                 Antes de comenzar a promocionar tus productos y servicios,
                 ingresa a la sección{" "}
                 <a className="text-indigo-600 underline" href="/account/site">
-                  "Sitio"
+                  Sitio
                 </a>{" "}
                 en la plataforma. Aquí podrás:
                 <ul className="list-disc list-inside">
@@ -118,7 +118,7 @@ export default function Page() {
                 </strong>{" "}
                 En la sección{" "}
                 <a className="text-indigo-600 underline" href="/account/pys">
-                  "Productos y Servicios"
+                  Productos y Servicios
                 </a>{" "}
                 encontrarás todo lo que puedes ofrecer a tus clientes:
                 <ul className="list-disc list-inside">
