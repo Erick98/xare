@@ -707,8 +707,8 @@ export default function Page() {
         </h2>
         <p className="mt-1 text-sm leading-6 text-gray-600 text-justify">
           Aquí encontrarás las páginas que has creado, puedes copiar y pegar el
-          link o ir directamente a la página, da "doble click para eliminar
-          alguna página".
+          link o ir directamente a la página, da doble click para eliminar
+          alguna página.
         </p>
         <div className="mt-4 grid grid-cols-1 gap-y-4">
           {landings.map((landing) => (
