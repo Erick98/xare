@@ -14,7 +14,7 @@ export default function Page() {
         setUserData(snap.result.data());
       });
     }
-  }, [user.uid]);
+  }, [user]);
 
   return (
     <div className="bg-white px-6 lg:px-8">
