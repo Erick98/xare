@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/context/AuthContext";
+import signin from "@/firebase/auth/signin";
 import { useEffect } from "react";
 
 export default function Page() {
@@ -15,22 +16,11 @@ export default function Page() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = e.target.elements;
-
-    const response = await fetch("/api/auth-token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username.value,
-        password: password.value,
-      }),
-    });
-    const data = await response.json();
-    if (data.token) {
+    const userCredential = await signin(username.value, password.value);
+    if (userCredential) {
       window.location.href = "/account";
     } else {
-      alert(data.message);
+      alert("Usuario o contraseña incorrectos");
     }
   };
 

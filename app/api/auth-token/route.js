@@ -6,6 +6,8 @@ export async function POST(req) {
   const auth = admin.auth();
   const { username, password } = await req.json();
 
+  console.log(username, password);
+
   if (username && password) {
     const user = await firestore
       .collection("users")
@@ -15,6 +17,7 @@ export async function POST(req) {
     if (user.docs.length > 0) {
       const user_id = user.docs[0].id;
       const token = await auth.createCustomToken(user_id);
+      console.log(token);
       return NextResponse.json({
         status: 200,
         token,
