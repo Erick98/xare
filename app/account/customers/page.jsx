@@ -58,7 +58,7 @@ export default function Page() {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div>
         <h1 className="text-2xl font-semibold text-gray-900">
           Agregar Cliente

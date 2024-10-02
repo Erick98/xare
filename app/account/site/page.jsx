@@ -722,14 +722,16 @@ export default function Page() {
               <p className="mt-1 text-sm leading-6 text-gray-600">
                 {landing.description}
               </p>
-              <a
-                href={`https://${site.subdomain}.xare.io/landing/${landing.id}`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="mt-1 text-sm leading-6 text-indigo-600"
-              >
-                https://{site.subdomain}.xare.io/landing/{landing.id}
-              </a>
+              <div className="w-full truncate">
+                <a
+                  href={`https://${site.subdomain}.xare.io/landing/${landing.id}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="mt-1 text-sm leading-6 text-indigo-600"
+                >
+                  https://{site.subdomain}.xare.io/landing/{landing.id}
+                </a>
+              </div>
               <div className="mt-4 flex">
                 <button
                   className="text-sm font-semibold text-white bg-red-700 px-2 py-1 rounded ml-auto cursor-pointer"

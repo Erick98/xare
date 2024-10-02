@@ -299,11 +299,17 @@ export default function Pys() {
           comenzar a vender y proceso de alta de cada uno de los clientes.
         </p>
       </div>
-      <ul role="list" className="divide-y divide-gray-100 grid grid-cols-2">
+      <ul
+        role="list"
+        className="divide-y divide-gray-100 grid grid-cols-1 md:grid-cols-2"
+      >
         {list.map((item) => (
           <li
             key={item.id}
             className="flex items-center justify-between gap-x-6 py-5 px-2"
+            onClick={() => {
+              setOpen(item.id);
+            }}
           >
             <div className="min-w-0">
               <div className="flex items-start gap-x-3">

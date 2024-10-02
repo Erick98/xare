@@ -1,6 +1,7 @@
 "use client";
 import { useAuthContext } from "@/context/AuthContext";
 import getData from "@/firebase/firestore/getData";
+import getWhereList from "@/firebase/firestore/getWhereList";
 import { LinkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 

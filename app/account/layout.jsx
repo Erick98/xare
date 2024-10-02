@@ -54,11 +54,11 @@ const navigation = [
     href: "/account/comissions",
     icon: BanknotesIcon,
   },
-  {
-    name: "Referencias",
-    href: "/account/references",
-    icon: CubeTransparentIcon,
-  },
+  // {
+  //   name: "Referencias",
+  //   href: "/account/references",
+  //   icon: CubeTransparentIcon,
+  // },
   // {
   //   name: "Pagos",
   //   href: "/account/payments",

@@ -313,7 +313,7 @@ export default function Page() {
     <div>
       <h1>Cotizaciones</h1>
       <p>{site && site.name}</p>
-      <div className="grid grid-cols-5 overflow-x-scroll p-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 overflow-x-scroll p-4 gap-6">
         {statuses.map((item) => (
           <div
             key={item}
